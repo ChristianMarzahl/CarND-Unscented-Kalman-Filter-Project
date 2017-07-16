@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <math.h>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -28,8 +29,16 @@ public:
   ///* state covariance matrix
   MatrixXd P_;
 
+  MatrixXd Q_;
+
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
+
+  ///* R matrix for lidar
+  MatrixXd R_lidar_;
+
+  ///* R matrix for radar
+  MatrixXd R_radar_;
 
   ///* time when the state is true, in us
   long long time_us_;
@@ -64,8 +73,17 @@ public:
   ///* Augmented state dimension
   int n_aug_;
 
+  int n_sig_;
+
+  int n_z_radar_;
+
+  int n_z_lidar_;
+
   ///* Sigma point spreading parameter
   double lambda_;
+
+  double NIS_laser_; // laser NIS
+  double NIS_radar_; // radar NIS
 
 
   /**
@@ -102,6 +120,11 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+/*
+  float NormalizeAngle(float angle);
+
+  float Atan2M(float y, float x);
+  */
 };
 
 #endif /* UKF_H */
